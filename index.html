@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le podcast de l'épargne logement — BTS Banque</title>
+<style>
+:root{
+  --navy:#1B3A5C; --teal:#1E9688; --orange:#E2672A; --purple:#6B4E9E; --brown:#A97C3D;
+  --cream:#FBF3E1; --text:#23272B; --muted:#5B5F65; --line:#E3E7EC; --bg:#fff;
+  --font-body:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;}
+html{ font-size:100%; }
+body{
+  margin:0; font-family:var(--font-body); color:var(--text); background:var(--bg);
+  -webkit-font-smoothing:antialiased; transition:background .15s ease, color .15s ease;
+}
+a{color:inherit;}
+button{font-family:inherit;}
+
+/* ================= ACCESSIBILITÉ PSH ================= */
+.a11y-bar{
+  position:sticky; top:0; z-index:50; background:var(--navy); padding:9px 14px;
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px; justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.a11y-btn{
+  display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,.08); color:#fff;
+  border:1px solid rgba(255,255,255,.18); border-radius:20px; padding:6px 11px; font-size:.72rem;
+  font-weight:600; cursor:pointer; line-height:1.2;
+}
+.a11y-btn:hover{ background:rgba(255,255,255,.16); }
+.a11y-btn[aria-pressed="true"]{ background:var(--orange); border-color:var(--orange); }
+.a11y-btn:focus-visible, a:focus-visible, audio:focus-visible{ outline:3px solid #E8A25A; outline-offset:2px; }
+.a11y-size{ display:inline-flex; gap:2px; }
+.a11y-size button{
+  background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.18); border-radius:8px;
+  width:30px; height:30px; cursor:pointer; font-weight:700;
+}
+.a11y-size button:hover{ background:rgba(255,255,255,.16); }
+
+/* Contraste renforcé */
+body.a11y-contrast{ --text:#000; --muted:#2A2A2A; --line:#000; --cream:#FFF6DC; --bg:#fff; }
+body.a11y-contrast .hero{ background:#000; }
+body.a11y-contrast .episode{ border-width:2px; }
+body.a11y-contrast .episode-code{ outline:1px solid #000; }
+
+/* Police adaptée (chasse large, cf. recommandations PSH) */
+body.a11y-font{ --font-body:'Verdana','Segoe UI',sans-serif; }
+body.a11y-font .episode-title, body.a11y-font p, body.a11y-font .module-title{ letter-spacing:.2px; line-height:1.65; }
+
+/* Alléger les animations */
+body.a11y-reduce-motion .waveform span{ animation:none !important; transform:scaleY(.8) !important; }
+body.a11y-reduce-motion *{ transition:none !important; }
+
+/* Mode FALC : consignes courtes, un point par ligne */
+body.a11y-falc .full-text{ display:none; }
+body.a11y-falc .falc-text{ display:block !important; }
+.falc-text{ display:none; }
+
+/* ================= HERO ================= */
+.hero{
+  background:var(--navy); color:#fff; position:relative; overflow:hidden;
+  padding:3.2rem 1.4rem 3.6rem; text-align:center;
+}
+.hero::before, .hero::after{ content:""; position:absolute; border-radius:50%; background:rgba(255,255,255,.05); }
+.hero::before{ width:340px; height:340px; top:-160px; right:-100px; }
+.hero::after{ width:220px; height:220px; bottom:-120px; left:-60px; background:rgba(255,255,255,.04); }
+.eyebrow{ font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#E8A25A; margin:0 0 .8rem; position:relative;}
+.hero h1{ font-size:clamp(1.6rem,5vw,2.5rem); font-weight:700; line-height:1.15; margin:0 0 .8rem; position:relative; }
+.hero p{ font-size:1rem; line-height:1.6; color:#C7D0DE; max-width:520px; margin:0 auto 1.7rem; position:relative; }
+.waveform{ display:flex; align-items:flex-end; justify-content:center; gap:5px; height:56px; margin:0 auto .5rem; position:relative; }
+.waveform span{ width:5px; border-radius:3px; background:linear-gradient(180deg,#E2672A,#F0A15E); animation:wf 1.4s ease-in-out infinite; }
+.waveform span:nth-child(1){height:18px; animation-delay:-1.2s;}
+.waveform span:nth-child(2){height:34px; animation-delay:-0.9s;}
+.waveform span:nth-child(3){height:52px; animation-delay:-0.6s;}
+.waveform span:nth-child(4){height:28px; animation-delay:-1.4s;}
+.waveform span:nth-child(5){height:44px; animation-delay:-0.3s;}
+.waveform span:nth-child(6){height:20px; animation-delay:-0.7s;}
+.waveform span:nth-child(7){height:38px; animation-delay:-1.0s;}
+.waveform span:nth-child(8){height:16px; animation-delay:-0.5s;}
+@keyframes wf{ 0%,100%{transform:scaleY(.45);} 50%{transform:scaleY(1);} }
+@media (prefers-reduced-motion:reduce){ .waveform span{animation:none; transform:scaleY(.8);} }
+.hub-link{
+  display:inline-flex; align-items:center; gap:6px; margin-top:1.4rem; font-size:.85rem; font-weight:600;
+  color:#C7D0DE; text-decoration:none; border-bottom:1px solid rgba(199,208,222,.4); padding-bottom:2px;
+}
+.hub-link:hover{ color:#fff; border-color:#fff; }
+
+/* ================= INTRO ================= */
+.intro{ max-width:720px; margin:2.2rem auto .5rem; padding:0 1.4rem; text-align:center; }
+.intro p{ font-size:.9rem; line-height:1.6; color:var(--muted); margin:0; }
+
+/* ================= MODULES ================= */
+.modules{ max-width:820px; margin:0 auto; padding:2rem 1.4rem 4.4rem; }
+.module{ margin-bottom:2.3rem; }
+.module-head{ display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+.module-num{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:.95rem; flex:0 0 auto; }
+.module-title{ font-size:1.2rem; font-weight:700; margin:0; }
+.episodes{ display:flex; flex-direction:column; gap:.75rem; }
+.episode{ border:1px solid var(--line); border-radius:14px; padding:1rem 1.1rem; background:var(--bg); }
+.episode-top{ display:flex; align-items:baseline; gap:.6rem; margin-bottom:.6rem; flex-wrap:wrap; }
+.episode-code{ font-size:.68rem; font-weight:700; letter-spacing:.5px; color:#fff; padding:3px 9px; border-radius:20px; flex:0 0 auto; }
+.episode-title{ font-size:.95rem; font-weight:600; margin:0; }
+audio{ width:100%; height:36px; display:block; }
+.text-toggle{
+  margin-top:.6rem; background:none; border:none; color:var(--navy); font-weight:700; font-size:.8rem;
+  cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;
+}
+.text-toggle .car{ display:inline-block; transition:transform .15s ease; }
+.text-toggle[aria-expanded="true"] .car{ transform:rotate(90deg); }
+.transcript{
+  display:none; margin-top:.7rem; padding:.8rem .9rem; background:var(--cream); border-radius:10px;
+  font-size:.83rem; line-height:1.55; color:var(--text);
+}
+.transcript.open{ display:block; }
+
+/* ================= FOOTER ================= */
+footer{ border-top:1px solid var(--line); padding:1.8rem 1.4rem 2.5rem; text-align:center; font-size:.78rem; color:var(--muted); }
+footer b{ color:var(--text); }
+
+@media (max-width:480px){
+  .hero{padding:2.6rem 1.1rem 3.2rem;}
+  .modules{padding:1.6rem 1.1rem 3.5rem;}
+  .episode{padding:.85rem;}
+  .a11y-bar{ gap:5px; padding:8px 10px; }
+  .a11y-btn{ font-size:.66rem; padding:5px 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="a11y-bar" role="toolbar" aria-label="Options d'accessibilité">
+  <span style="color:#C7D0DE; font-size:.7rem; font-weight:700; margin-right:2px;">♿ Accessibilité</span>
+  <button class="a11y-btn" id="btn-font" aria-pressed="false" onclick="toggleA11y('a11y-font', this)">🔤 Police adaptée</button>
+  <button class="a11y-btn" id="btn-contrast" aria-pressed="false" onclick="toggleA11y('a11y-contrast', this)">◐ Contraste renforcé</button>
+  <button class="a11y-btn" id="btn-falc" aria-pressed="false" onclick="toggleA11y('a11y-falc', this)">📖 Mode FALC</button>
+  <button class="a11y-btn" id="btn-hover" aria-pressed="false" onclick="toggleA11y('a11y-hover-read', this)">🔊 Lecture au survol</button>
+  <button class="a11y-btn" id="btn-motion" aria-pressed="false" onclick="toggleA11y('a11y-reduce-motion', this)">🎬 Alléger les animations</button>
+  <span class="a11y-size" aria-label="Taille du texte">
+    <button onclick="changeSize(-10)" aria-label="Réduire la taille du texte">A−</button>
+    <button onclick="changeSize(0)" aria-label="Taille du texte normale">A</button>
+    <button onclick="changeSize(10)" aria-label="Augmenter la taille du texte">A+</button>
+  </span>
+</div>
+
+<div class="hero">
+  <p class="eyebrow">BTS Banque · Activité 3 · Séquence 2</p>
+  <h1 data-speak="Le podcast de l'épargne logement">Le podcast de<br>l'épargne logement</h1>
+  <div class="waveform" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <p class="full-text">Onze épisodes courts, un par point de cours sur le PEL et le CEL — à écouter dans l'ordre du
+  dossier de conseil, ou juste celui qui vous manque.</p>
+  <p class="falc-text">Onze épisodes courts.<br>Un par point de cours.<br>Écoutez dans l'ordre, ou choisissez juste celui qu'il vous faut.</p>
+  <a class="hub-link" href="https://rbrdingenierie-ui.github.io/arcade_CESBF_act3_S2/">← Retour à l'Arcade de Mnémosia</a>
+</div>
+
+<div class="intro">
+  <p class="full-text">Chaque épisode reprend, à l'oral, le contenu exact de l'encadré « Informations à exploiter »
+  correspondant dans le cours — pour réécouter un point sans avoir le support sous les yeux. Le texte
+  de chaque épisode est aussi disponible en dépliant « Voir le texte ».</p>
+  <p class="falc-text">Chaque épisode dit la même chose que le cours écrit.<br>Vous pouvez aussi lire le texte : cliquez sur « Voir le texte ».</p>
+</div>
+
+<div class="modules">
+
+  <div class="module">
+    <div class="module-head">
+      <div class="module-num" style="background:var(--teal);">1</div>
+      <h2 class="module-title" data-speak="Module 1. Je découvre le PEL et le CEL">Je découvre le PEL et le CEL</h2>
+    </div>
+    <div class="episodes">
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--teal);">M1a</span>
+          <p class="episode-title" data-speak="Le PEL et le CEL, à quoi ça sert, qui peut en ouvrir un">Le PEL et le CEL : à quoi ça sert, qui peut en ouvrir un</p>
+        </div>
+        <audio controls preload="none"><source src="M1a.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">L'épargne logement s'articule autour de deux produits : le plan épargne logement (PEL) et le
+        compte épargne logement (CEL). Contrairement aux livrets vus en Séquence 1, ils donnent, en plus d'une
+        rémunération, un droit à prêt immobilier.<br><br>
+        Le PEL est un produit d'épargne contractuel, ouvert à toute personne physique, majeure ou mineure —
+        mais la multi-détention est impossible : un client ne peut détenir qu'un seul PEL à la fois. Le PEL
+        et le CEL doivent par ailleurs être ouverts dans la même banque.</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--teal);">M1b</span>
+          <p class="episode-title">Versements et retraits : les règles à connaître</p>
+        </div>
+        <audio controls preload="none"><source src="M1b.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Le dépôt initial minimum est de 225 € pour un PEL (versement maximum de 59 040 €), contre 300 €
+        pour un CEL.<br><br>
+        Concernant les retraits, un PEL ne permet aucun retrait partiel : tout retrait entraîne la clôture du
+        plan. Un CEL autorise au contraire des retraits libres, à condition de conserver un solde minimum de
+        300 € — faute de quoi il est clôturé.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-head">
+      <div class="module-num" style="background:var(--orange);">2</div>
+      <h2 class="module-title">Je maîtrise la durée de vie du PEL</h2>
+    </div>
+    <div class="episodes">
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--orange);">M2a</span>
+          <p class="episode-title">Les 10 premières années d'un PEL</p>
+        </div>
+        <audio controls preload="none"><source src="M2a.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">La vie d'un PEL se découpe en trois grandes périodes. De 0 à 10 ans, la durée minimale de la
+        phase épargne pour bénéficier de tous les avantages du plan est de 4 ans ; au-delà, le PEL peut être
+        prorogé chaque année — une prorogation tacite — jusqu'à ses 10 ans.<br><br>
+        De 10 à 15 ans, le plan est gelé : il continue de produire des intérêts, mais ne donne plus de
+        nouveaux droits à prêt, et aucun nouveau versement n'est plus possible.</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--orange);">M2b</span>
+          <p class="episode-title">Après 15 ans, et en cas de décès du titulaire</p>
+        </div>
+        <audio controls preload="none"><source src="M2b.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Au-delà de 15 ans, deux cas se présentent selon la date d'ouverture : un PEL ouvert avant le
+        1ᵉʳ mars 2011 reste conservable pour une durée illimitée par son titulaire, tandis qu'un PEL ouvert
+        après cette date est transformé en CSL (compte sur livret).<br><br>
+        En cas de décès du titulaire, la règle dépend de l'ancienneté du plan : au-delà de 10 ans, le PEL est
+        clôturé et les capitaux entrent dans la succession — les droits à prêt, s'ils sont acquis, restent
+        transmissibles aux héritiers pendant 12 mois. En-deçà de 10 ans, un héritier peut au contraire
+        reprendre le PEL et l'engagement de versement (multi-détention).</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--orange);">M2c</span>
+          <p class="episode-title">Céder son PEL, et les autres particularités</p>
+        </div>
+        <audio controls preload="none"><source src="M2c.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Le titulaire peut céder son PEL à une personne qui n'en détient pas encore, à condition que
+        celle-ci reprenne les engagements du plan. Autres particularités à connaître : le nantissement du PEL
+        est interdit, une transformation en CEL reste possible avant l'échéance, le plan est transférable
+        d'une banque à une autre moyennant des frais, et ses droits à prêt restent utilisables pendant 1 an
+        après la clôture.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-head">
+      <div class="module-num" style="background:var(--purple);">3</div>
+      <h2 class="module-title">Je détermine la fiscalité du PEL et du CEL</h2>
+    </div>
+    <div class="episodes">
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--purple);">M3a</span>
+          <p class="episode-title">Fiscalité du PEL : tout dépend de la date d'ouverture</p>
+        </div>
+        <audio controls preload="none"><source src="M3a.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Le régime fiscal d'un PEL ou d'un CEL dépend d'un seul critère : sa date d'ouverture. Un PEL
+        ouvert avant le 1ᵉʳ mars 2011 est fiscalisé dès la 12ᵉ année : il est alors soumis à l'impôt sur le
+        revenu, les prélèvements sociaux étant prélevés en bloc à la clôture ou à la 10ᵉ année, puis chaque
+        année ensuite.<br><br>
+        Un PEL ouvert après le 1ᵉʳ janvier 2018 est, lui, fiscalisé dès la 1ʳᵉ année, avec le choix entre le
+        PFU de 30 % et l'impôt sur le revenu chaque année.</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--purple);">M3b</span>
+          <p class="episode-title">Le PFU, et la fiscalité du CEL</p>
+        </div>
+        <audio controls preload="none"><source src="M3b.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Le PFU (prélèvement forfaitaire unique) est un taux forfaitaire unique de 30 % auquel
+        l'épargnant peut opter pour l'imposition des intérêts d'un PEL ouvert après le 1ᵉʳ mars 2011 — en
+        alternative au barème progressif de l'impôt sur le revenu. Un PEL ouvert entre le 1ᵉʳ mars 2011 et le
+        1ᵉʳ janvier 2018 bénéficie du même choix, dès sa 12ᵉ année.<br><br>
+        Côté CEL, la règle est plus simple : un CEL ouvert avant le 1ᵉʳ janvier 2018 est exonéré d'impôt sur
+        le revenu — seuls les prélèvements sociaux restent dus chaque année. Un CEL ouvert après le 1ᵉʳ
+        janvier 2018 est en revanche soumis au PFU de 30 %, ou à une intégration à l'impôt sur le revenu
+        (RCM), auxquels s'ajoutent les prélèvements sociaux.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-head">
+      <div class="module-num" style="background:var(--brown);">4</div>
+      <h2 class="module-title">Je comprends la phase prêt</h2>
+    </div>
+    <div class="episodes">
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--brown);">M4a</span>
+          <p class="episode-title">À quoi sert le prêt épargne logement</p>
+        </div>
+        <audio controls preload="none"><source src="M4a.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Un prêt épargne logement finance l'achat, la construction, l'extension, ou des travaux de
+        réparation ou d'amélioration d'un logement destiné à l'habitation principale du bénéficiaire du prêt,
+        d'un ascendant, d'un descendant, de son conjoint, ou d'un locataire (en location nue de plus de 3
+        ans). Il peut aussi financer un garage ou une place de stationnement proches de cette résidence, ou
+        des parts de SCPI logement.<br><br>
+        Côté conditions d'accès : pour un PEL, la phase épargne doit durer au moins 3 ans. Pour un CEL, elle
+        doit durer au moins 18 mois (12 mois en cas de cession de droits provenant d'un CEL de plus de 18
+        mois).</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--brown);">M4b</span>
+          <p class="episode-title">Dans quelle banque, et à qui céder ses droits</p>
+        </div>
+        <audio controls preload="none"><source src="M4b.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Dans tous les cas, le prêt peut être demandé dans n'importe quelle banque, sur présentation
+        d'une attestation de droits acquis. En cas de cumul de droits à prêt (PEL et CEL), la souscription
+        doit en revanche se faire dans la même banque.<br><br>
+        Le titulaire peut enfin céder ses droits à prêt à un cercle précis de proches : son conjoint (à
+        l'exclusion des partenaires de PACS et des concubins), ses ascendants et descendants, ses oncles et
+        tantes, ses frères et sœurs, ses neveux et nièces, ainsi que les conjoints de ces derniers.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-head">
+      <div class="module-num" style="background:var(--navy);">5</div>
+      <h2 class="module-title">Je calcule le prêt et je conseille mon client</h2>
+    </div>
+    <div class="episodes">
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--navy);">M5a</span>
+          <p class="episode-title">Calculer le montant et le taux du prêt</p>
+        </div>
+        <audio controls preload="none"><source src="M5a.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">Le montant d'un prêt PEL est calculé en fonction des intérêts acquis lors du dernier
+        anniversaire du plan, plafonné à 2,5 fois ces intérêts pour un financement classique (1,5 fois pour
+        des parts de SCPI), sans jamais dépasser 92 000 €. Son taux correspond au taux de la phase épargne
+        majoré de 1,20 point.<br><br>
+        Le montant d'un prêt CEL suit la même logique — en fonction des intérêts acquis, plafonné à 1,5 fois
+        ces intérêts, sans dépasser 23 000 € — mais son taux est majoré de 1,50 point par rapport au taux de
+        la phase épargne.<br><br>
+        Dans tous les cas, la durée du prêt est comprise entre 2 et 15 ans. Aucun frais de dossier n'est
+        appliqué, un remboursement anticipé reste possible, et ce prêt est considéré par la banque comme un
+        apport personnel.</div>
+      </div>
+
+      <div class="episode">
+        <div class="episode-top">
+          <span class="episode-code" style="background:var(--navy);">M5b</span>
+          <p class="episode-title">La prime d'État, mode d'emploi</p>
+        </div>
+        <audio controls preload="none"><source src="M5b.mp3" type="audio/mpeg"></audio>
+        <button class="text-toggle" aria-expanded="false" onclick="toggleText(this)"><span class="car">▸</span> Voir le texte</button>
+        <div class="transcript">La prime d'État est une aide versée par l'État, sous conditions, en complément des intérêts
+        acquis. Pour un PEL, elle est due si le prêt dépasse 5 000 € (pour les plans ouverts après le 1ᵉʳ
+        mars 2011), plafonnée à 1 000 € (1 525 € pour un logement basse consommation). Pour un CEL, elle
+        n'est accordée qu'en cas de prêt, plafonnée à 1 144 € par opération. Dans les deux cas, plus aucune
+        prime n'est due pour un produit ouvert après le 1ᵉʳ janvier 2018.<br><br>
+        Le cumul PEL + CEL reste possible : un client qui recourt à la fois à un prêt PEL et à un prêt CEL
+        peut percevoir les deux primes d'État. La prime, non soumise à l'impôt sur le revenu, reste
+        assujettie aux prélèvements sociaux de 17,2 %.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <b>BTS Banque</b> · Activité 3 — Élaboration d'une solution d'épargne · Séquence 2 · Benjamin RICHARD
+</footer>
+
+<script>
+function toggleA11y(cls, btn) {
+  const on = document.body.classList.toggle(cls);
+  btn.setAttribute('aria-pressed', on);
+  if (cls === 'a11y-hover-read' && !on) speechSynthesis.cancel();
+}
+
+let currentSize = 100;
+function changeSize(delta) {
+  currentSize = delta === 0 ? 100 : Math.max(80, Math.min(140, currentSize + delta));
+  document.documentElement.style.fontSize = currentSize + '%';
+}
+
+function toggleText(btn) {
+  const box = btn.nextElementSibling;
+  const open = box.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+
+document.addEventListener('mouseover', function(e) {
+  if (!document.body.classList.contains('a11y-hover-read')) return;
+  const el = e.target.closest('[data-speak], h1, h2, .episode-title, .a11y-btn');
+  if (!el) return;
+  const text = el.dataset.speak || el.textContent;
+  if (!text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.trim());
+  u.lang = 'fr-FR';
+  speechSynthesis.speak(u);
+});
+</script>
+
+</body>
+</html>
